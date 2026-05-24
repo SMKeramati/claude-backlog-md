@@ -4,20 +4,19 @@
 
 ## Quick start
 
-You don't need `backlog-md` installed beforehand — the plugin installs it on first use via `bun` / `npm` / `brew` (whichever you have).
-
 ```bash
 # In Claude Code:
 /plugin install SMKeramati/claude-backlog-md
 ```
 
-Then in any project:
+You don't need `backlog-md` pre-installed — the plugin installs it on first use via `bun` / `npm` / `brew`.
 
-- **Brand-new project** → `backlog init "My Project"` (or let the bootstrap skill do it).
-- **Existing project with messy `/docs`** → run `/backlog-md:bootstrap` and let Claude migrate it (dry-runs first, asks before writing).
-- **Already using Backlog.md** → just keep working. The plugin auto-tracks your flow: Claude proposes a plan → you accept → task created as `To Do`; Claude commits → task auto-bumps to `In Progress`.
+**Nothing happens until you opt a project in.** The plugin only activates inside projects with a `backlog/` folder. To create one:
 
-Everything is gated on `backlog/` existing in the project. In any other repo, the plugin is dormant — zero context cost, zero noise.
+- **New project** → `backlog init "My Project"`
+- **Existing project with `/docs`** → run `/backlog-md:bootstrap` (Claude migrates your docs, asks before writing)
+
+After that: Claude proposes a plan → you accept → task created as `To Do`. Claude runs `git commit` → task bumps to `In Progress`. In every other repo: zero hooks, zero context cost.
 
 ---
 
