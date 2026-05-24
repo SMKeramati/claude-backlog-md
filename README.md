@@ -20,13 +20,27 @@ MCP server         ──┘  (so casual chats don't trigger anything)
 | **MCP server** | Bundles [Backlog.md's MCP](https://github.com/MrLesk/Backlog.md#mcp-integration) (task_create, task_list, task_edit, document_create, …). | Whenever you use Claude Code. Backlog itself reports "not initialized" for projects without `backlog/` — graceful degradation. |
 | **Auto-install** | First time the MCP server starts and `backlog` CLI isn't on PATH, the wrapper installs it via `bun` → `npm` → `brew` (in that order). | Once. Subsequent sessions are instant. |
 | **SessionStart hook** | Injects a compact task-state summary (`In Progress: 2 · To Do: 5 · Done: 11`) and the titles of in-progress tasks. | **Gated:** only when `backlog/tasks/` exists in the current project. Casual chats in unrelated projects see zero impact. |
+| **Plan-acceptance hook** | When Claude finishes a plan via `ExitPlanMode` *and* the user accepts it (detected by the next non-plan tool firing), creates a new task with status `To Do`. The plan content goes into the task's `plan` field. Rejected plans never materialize — Claude's next `ExitPlanMode` overwrites the staged plan instead. | Gated on `backlog/`; silent everywhere else. |
+| **Commit-detection hook** | When Claude runs `git commit` (and only `commit` — not `log`, `status`, etc.), the currently-active task is bumped from `To Do` → `In Progress`. Idempotent: tasks already past `To Do` are not touched. | Gated; only fires on actual git commits, never on file edits. |
 | **`bootstrap-from-docs` skill** | Reads an existing `/docs` folder, classifies each file as task vs reference doc, dry-runs a migration plan, waits for confirmation, then populates `backlog/`. | User-invoked: `/backlog-md:bootstrap-from-docs [path]`. |
 
 What's deliberately **not** included:
 
 - No CLAUDE.md edits (ever).
-- No `Stop` / `PreToolUse` / `UserPromptSubmit` hooks.
+- No `Stop` / `PreToolUse` / `UserPromptSubmit` hooks. The three hooks above fire on narrow, deterministic events — they don't run on every turn or every keystroke.
 - No prompt injection of long instruction blocks. Backlog.md's own MCP already ships a 25-line agent nudge — we don't duplicate it.
+
+### Workflow this creates
+
+```
+Claude proposes a plan      →  ExitPlanMode call
+You accept                  →  next tool fires  →  task created, status: To Do
+Claude works, runs tests    →  (no hook activity — silent)
+Claude runs `git commit`    →  task → In Progress
+You manually mark Done      →  `backlog task complete <id>`  (or via MCP)
+```
+
+State (which task is "active") is stored in `${TMPDIR}/cbm-<project-hash>/` — never inside your repo.
 
 ---
 
@@ -113,15 +127,18 @@ claude-backlog-md/
 ├── .mcp.json                     # registers `backlog` MCP server
 ├── bin/backlog-mcp.sh            # wrapper: auto-installs CLI, then `backlog mcp start`
 ├── hooks/
-│   ├── hooks.json                # SessionStart wiring
-│   └── session-start.sh          # gated context injector
+│   ├── hooks.json                # event → script wiring
+│   ├── lib.sh                    # shared helpers (state dir, JSON parsing, gates)
+│   ├── session-start.sh          # gated context injector
+│   ├── on-plan-exit.sh           # stages plan content (after ExitPlanMode)
+│   └── on-tool.sh                # consumes plan + detects git commit
 ├── skills/
 │   └── bootstrap-from-docs/
 │       └── SKILL.md              # `/backlog-md:bootstrap-from-docs`
 └── README.md
 ```
 
-7 files. No node_modules, no build step, no daemon other than the MCP server (which Backlog.md provides).
+10 files. No node_modules, no build step, no daemon other than the MCP server (which Backlog.md provides).
 
 ---
 

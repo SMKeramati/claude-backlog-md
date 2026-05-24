@@ -1,4 +1,5 @@
 {
+  "description": "claude-backlog-md hooks — all gated on backlog/ existence; no-op everywhere else.",
   "hooks": {
     "SessionStart": [
       {
@@ -6,6 +7,26 @@
           {
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/on-plan-exit.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/on-tool.sh"
           }
         ]
       }
