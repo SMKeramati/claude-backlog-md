@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "backlog": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/bin/backlog-mcp.sh",
+      "args": []
+    }
+  }
+}
