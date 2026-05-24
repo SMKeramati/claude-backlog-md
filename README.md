@@ -4,12 +4,15 @@
 
 ## Quick start
 
+**Claude Code (CLI):**
 ```bash
-# In Claude Code:
-/plugin install SMKeramati/claude-backlog-md
+/plugin marketplace add SMKeramati/claude-backlog-md
+/plugin install backlog-md@claude-backlog-md
 ```
 
-No prior install needed — the plugin grabs `backlog-md` via `bun` / `npm` / `brew` on first use.
+**Claude Desktop:** Customize → Personal plugins **+** → Create plugin → **Add marketplace** → paste `SMKeramati/claude-backlog-md` → install `backlog-md`.
+
+No prior `backlog-md` install needed — the plugin grabs it via `bun` / `npm` / `brew` on first use.
 
 **Plugin stays dormant until a project has a `backlog/` folder.** To opt in:
 

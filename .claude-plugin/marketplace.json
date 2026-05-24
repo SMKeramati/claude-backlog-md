@@ -1,0 +1,25 @@
+{
+  "name": "claude-backlog-md",
+  "owner": {
+    "name": "SMKeramati",
+    "url": "https://github.com/SMKeramati"
+  },
+  "metadata": {
+    "description": "Claude Code plugin for Backlog.md — wraps the MCP server, auto-installs the CLI, ships a /bootstrap skill, and adds three gated hooks (SessionStart, plan-accept, git-commit)."
+  },
+  "plugins": [
+    {
+      "name": "backlog-md",
+      "source": "./",
+      "description": "Wraps Backlog.md MCP, auto-installs the CLI, adds a /bootstrap skill for docs migration, three gated hooks. Zero CLAUDE.md edits.",
+      "version": "0.1.0",
+      "author": {
+        "name": "SMKeramati",
+        "url": "https://github.com/SMKeramati"
+      },
+      "homepage": "https://github.com/SMKeramati/claude-backlog-md",
+      "license": "MIT",
+      "keywords": ["backlog-md", "task-management", "mcp", "markdown", "kanban", "claude-code"]
+    }
+  ]
+}
