@@ -1,6 +1,6 @@
 ---
-name: bootstrap-from-docs
-description: Use when the user runs `/backlog-md:bootstrap-from-docs`, or asks to "import existing docs into backlog", "migrate /docs to backlog.md", "bootstrap backlog from this project's documentation", "set up backlog from what's already there", or "extract tasks from these scattered markdown files". Reads the project's existing /docs folder, separates roadmap / todo / done / in-progress content from reference docs, and populates a clean Backlog.md project via the backlog CLI. Interactive — shows a dry-run plan first and waits for confirmation before writing anything.
+name: bootstrap
+description: Use when the user runs `/backlog-md:bootstrap`, or asks to "import existing docs into backlog", "migrate /docs to backlog.md", "bootstrap backlog from this project's documentation", "set up backlog from what's already there", or "extract tasks from these scattered markdown files". Reads the project's existing /docs folder, separates roadmap / todo / done / in-progress content from reference docs, and populates a clean Backlog.md project via the backlog CLI. Interactive — shows a dry-run plan first and waits for confirmation before writing anything.
 argument-hint: "[path-to-docs-folder]"
 allowed-tools: Read, Glob, Grep, Bash
 ---
