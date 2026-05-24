@@ -14,7 +14,7 @@ You don't need `backlog-md` installed beforehand — the plugin installs it on f
 Then in any project:
 
 - **Brand-new project** → `backlog init "My Project"` (or let the bootstrap skill do it).
-- **Existing project with messy `/docs`** → run `/backlog-md:bootstrap-from-docs` and let Claude migrate it (dry-runs first, asks before writing).
+- **Existing project with messy `/docs`** → run `/backlog-md:bootstrap` and let Claude migrate it (dry-runs first, asks before writing).
 - **Already using Backlog.md** → just keep working. The plugin auto-tracks your flow: Claude proposes a plan → you accept → task created as `To Do`; Claude commits → task auto-bumps to `In Progress`.
 
 Everything is gated on `backlog/` existing in the project. In any other repo, the plugin is dormant — zero context cost, zero noise.
@@ -41,7 +41,7 @@ MCP server         ──┘  (so casual chats don't trigger anything)
 | **SessionStart hook** | Injects a compact task-state summary (`In Progress: 2 · To Do: 5 · Done: 11`) and the titles of in-progress tasks. | **Gated:** only when `backlog/tasks/` exists in the current project. Casual chats in unrelated projects see zero impact. |
 | **Plan-acceptance hook** | When Claude finishes a plan via `ExitPlanMode` *and* the user accepts it (detected by the next non-plan tool firing), creates a new task with status `To Do`. The plan content goes into the task's `plan` field. Rejected plans never materialize — Claude's next `ExitPlanMode` overwrites the staged plan instead. | Gated on `backlog/`; silent everywhere else. |
 | **Commit-detection hook** | When Claude runs `git commit` (and only `commit` — not `log`, `status`, etc.), the currently-active task is bumped from `To Do` → `In Progress`. Idempotent: tasks already past `To Do` are not touched. | Gated; only fires on actual git commits, never on file edits. |
-| **`bootstrap-from-docs` skill** | Reads an existing `/docs` folder, classifies each file as task vs reference doc, dry-runs a migration plan, waits for confirmation, then populates `backlog/`. | User-invoked: `/backlog-md:bootstrap-from-docs [path]`. |
+| **`bootstrap` skill** | Reads an existing `/docs` folder, classifies each file as task vs reference doc, dry-runs a migration plan, waits for confirmation, then populates `backlog/`. | User-invoked: `/backlog-md:bootstrap [path]`. |
 
 What's deliberately **not** included:
 
@@ -152,8 +152,8 @@ claude-backlog-md/
 │   ├── on-plan-exit.sh           # stages plan content (after ExitPlanMode)
 │   └── on-tool.sh                # consumes plan + detects git commit
 ├── skills/
-│   └── bootstrap-from-docs/
-│       └── SKILL.md              # `/backlog-md:bootstrap-from-docs`
+│   └── bootstrap/
+│       └── SKILL.md              # `/backlog-md:bootstrap`
 └── README.md
 ```
 
