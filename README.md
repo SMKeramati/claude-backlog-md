@@ -13,8 +13,8 @@ No prior install needed — the plugin grabs `backlog-md` via `bun` / `npm` / `b
 
 **Plugin stays dormant until a project has a `backlog/` folder.** To opt in:
 
-- New project → `backlog init "My Project"`
-- Existing project with `/docs` → run `/backlog-md:bootstrap` (Claude migrates, asks first)
+- New project → `backlog init` (uses your folder name; add `--defaults` for zero prompts)
+- Existing project with `/docs` → run `/backlog-md:bootstrap` (Claude inits + migrates, asks first)
 
 After that, your flow auto-tracks: plan accepted → task `To Do`; `git commit` → task `In Progress`. Everywhere else: zero hooks, zero context.
 
