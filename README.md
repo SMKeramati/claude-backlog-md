@@ -1,6 +1,25 @@
 # claude-backlog-md
 
-**Claude Code plugin for [Backlog.md](https://github.com/MrLesk/Backlog.md).** Wraps the MCP server, auto-installs the CLI on first use, and adds a `/bootstrap-from-docs` skill for turning a messy `/docs` folder into a clean Backlog. Minimal — one gated hook, zero CLAUDE.md edits.
+**Claude Code plugin for [Backlog.md](https://github.com/MrLesk/Backlog.md).** Wraps the MCP server, auto-installs the CLI on first use, and adds a `/bootstrap-from-docs` skill for turning a messy `/docs` folder into a clean Backlog. Minimal — three gated hooks, zero CLAUDE.md edits.
+
+## Quick start
+
+You don't need `backlog-md` installed beforehand — the plugin installs it on first use via `bun` / `npm` / `brew` (whichever you have).
+
+```bash
+# In Claude Code:
+/plugin install SMKeramati/claude-backlog-md
+```
+
+Then in any project:
+
+- **Brand-new project** → `backlog init "My Project"` (or let the bootstrap skill do it).
+- **Existing project with messy `/docs`** → run `/backlog-md:bootstrap-from-docs` and let Claude migrate it (dry-runs first, asks before writing).
+- **Already using Backlog.md** → just keep working. The plugin auto-tracks your flow: Claude proposes a plan → you accept → task created as `To Do`; Claude commits → task auto-bumps to `In Progress`.
+
+Everything is gated on `backlog/` existing in the project. In any other repo, the plugin is dormant — zero context cost, zero noise.
+
+---
 
 ```
 SessionStart hook  ──┐
