@@ -6,11 +6,13 @@
 
 **Claude Code (CLI):**
 ```bash
-/plugin marketplace add SMKeramati/claude-backlog-md
+/plugin marketplace add https://github.com/SMKeramati/claude-backlog-md.git
 /plugin install backlog-md@claude-backlog-md
 ```
 
-**Claude Desktop:** Customize → Personal plugins **+** → Create plugin → **Add marketplace** → paste `SMKeramati/claude-backlog-md` → install `backlog-md`.
+(The `owner/repo` shorthand also works if your SSH is set up for GitHub — but the HTTPS URL is more portable, especially on Linux.)
+
+**Claude Desktop:** Customize → Personal plugins **+** → Create plugin → **Add marketplace** → paste `https://github.com/SMKeramati/claude-backlog-md.git` → install `backlog-md`.
 
 No prior `backlog-md` install needed — the plugin grabs it via `bun` / `npm` / `brew` on first use.
 
