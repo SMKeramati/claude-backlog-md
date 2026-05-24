@@ -1,6 +1,6 @@
 # claude-backlog-md
 
-**Claude Code plugin for [Backlog.md](https://github.com/MrLesk/Backlog.md).** Wraps the MCP server, auto-installs the CLI on first use, and adds a `/bootstrap` skill for turning a messy `/docs` folder into a clean Backlog. Minimal — three gated hooks, zero CLAUDE.md edits.
+**Claude Code plugin for [Backlog.md](https://github.com/MrLesk/Backlog.md).** Wraps the MCP server, auto-installs the CLI on first use, and adds a `/backlog-migrate` skill for turning a messy `/docs` folder into a clean Backlog. Minimal — three gated hooks, zero CLAUDE.md edits.
 
 ## Quick start
 
@@ -19,7 +19,7 @@ No prior `backlog-md` install needed — the plugin grabs it via `bun` / `npm` /
 **Plugin stays dormant until a project has a `backlog/` folder.** To opt in:
 
 - New project → `backlog init` (uses your folder name; add `--defaults` for zero prompts)
-- Existing project with `/docs` → run `/backlog-md:bootstrap` (Claude inits + migrates, asks first)
+- Existing project with `/docs` → run `/backlog-md:backlog-migrate` (Claude inits + migrates, asks first)
 
 After that, your flow auto-tracks: plan accepted → task `To Do`; `git commit` → task `In Progress`. Everywhere else: zero hooks, zero context.
 
@@ -30,7 +30,7 @@ SessionStart hook  ──┐
                      ├─ only activates in projects with a `backlog/` folder
 MCP server         ──┘  (so casual chats don't trigger anything)
 
-/backlog-md:bootstrap  ──  user-invoked, interactive migration
+/backlog-md:backlog-migrate  ──  user-invoked, interactive migration
                                      dry-runs the plan, asks before writing
 ```
 
@@ -45,7 +45,7 @@ MCP server         ──┘  (so casual chats don't trigger anything)
 | **SessionStart hook** | Injects a compact task-state summary (`In Progress: 2 · To Do: 5 · Done: 11`) and the titles of in-progress tasks. | **Gated:** only when `backlog/tasks/` exists in the current project. Casual chats in unrelated projects see zero impact. |
 | **Plan-acceptance hook** | When Claude finishes a plan via `ExitPlanMode` *and* the user accepts it (detected by the next non-plan tool firing), creates a new task with status `To Do`. The plan content goes into the task's `plan` field. Rejected plans never materialize — Claude's next `ExitPlanMode` overwrites the staged plan instead. | Gated on `backlog/`; silent everywhere else. |
 | **Commit-detection hook** | When Claude runs `git commit` (and only `commit` — not `log`, `status`, etc.), the currently-active task is bumped from `To Do` → `In Progress`. Idempotent: tasks already past `To Do` are not touched. | Gated; only fires on actual git commits, never on file edits. |
-| **`bootstrap` skill** | Reads an existing `/docs` folder, classifies each file as task vs reference doc, dry-runs a migration plan, waits for confirmation, then populates `backlog/`. | User-invoked: `/backlog-md:bootstrap [path]`. |
+| **`backlog-migrate` skill** | Reads an existing `/docs` folder, classifies each file as task vs reference doc, dry-runs a migration plan, waits for confirmation, then populates `backlog/`. | User-invoked: `/backlog-md:backlog-migrate [path]`. |
 
 What's deliberately **not** included:
 
@@ -103,16 +103,16 @@ Claude: [reads task_list via MCP, answers]
 
 ### In a project that has `/docs` but no `backlog/`
 
-Run the bootstrap skill:
+Run the migrate skill:
 
 ```
-/backlog-md:bootstrap
+/backlog-md:backlog-migrate
 ```
 
 or pointing at a non-default path:
 
 ```
-/backlog-md:bootstrap ./project-notes
+/backlog-md:backlog-migrate ./project-notes
 ```
 
 The skill will:
@@ -156,8 +156,8 @@ claude-backlog-md/
 │   ├── on-plan-exit.sh           # stages plan content (after ExitPlanMode)
 │   └── on-tool.sh                # consumes plan + detects git commit
 ├── skills/
-│   └── bootstrap/
-│       └── SKILL.md              # `/backlog-md:bootstrap`
+│   └── backlog-migrate/
+│       └── SKILL.md              # `/backlog-md:backlog-migrate`
 └── README.md
 ```
 

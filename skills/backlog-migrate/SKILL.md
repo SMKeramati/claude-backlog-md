@@ -1,11 +1,11 @@
 ---
-name: bootstrap
-description: Use when the user runs `/backlog-md:bootstrap`, or asks to "import existing docs into backlog", "migrate /docs to backlog.md", "bootstrap backlog from this project's documentation", "set up backlog from what's already there", or "extract tasks from these scattered markdown files". Reads the project's existing /docs folder, separates roadmap / todo / done / in-progress content from reference docs, and populates a clean Backlog.md project via the backlog CLI. Interactive — shows a dry-run plan first and waits for confirmation before writing anything.
+name: backlog-migrate
+description: Use when the user runs `/backlog-md:backlog-migrate`, or asks to "migrate /docs to backlog.md", "import existing docs into backlog", "bootstrap backlog from this project's documentation", "set up backlog from what's already there", or "extract tasks from these scattered markdown files". Reads the project's existing /docs folder, separates roadmap / todo / done / in-progress content from reference docs, and populates a clean Backlog.md project via the backlog CLI. Interactive — shows a dry-run plan first and waits for confirmation before writing anything.
 argument-hint: "[path-to-docs-folder]"
 allowed-tools: Read, Glob, Grep, Bash
 ---
 
-# Bootstrap Backlog.md from existing project docs
+# Migrate existing project docs into Backlog.md
 
 Use this skill to migrate a project's existing, unstructured `/docs` folder (or similar) into a clean [Backlog.md](https://github.com/MrLesk/Backlog.md) setup. The skill is **interactive and conservative**: it always shows the user what it intends to do before touching the filesystem.
 
@@ -98,6 +98,6 @@ Next steps:
 
 ## When NOT to use this skill
 
-- Project already has a populated `backlog/tasks/` folder — there's nothing to bootstrap. Suggest `backlog task list` instead.
+- Project already has a populated `backlog/tasks/` folder — there's nothing to migrate. Suggest `backlog task list` instead.
 - The "docs" folder is actually rendered API docs / generated reference material — those don't map to backlog content.
 - User wants ongoing two-way sync between docs and backlog — this skill is one-shot migration, not sync.
