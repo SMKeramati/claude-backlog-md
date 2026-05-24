@@ -1,7 +1,7 @@
 {
   "name": "backlog-md",
   "version": "0.1.0",
-  "description": "Wraps the Backlog.md MCP server, auto-installs the backlog-md CLI on first use, and adds a bootstrap-from-docs skill for migrating messy /docs folders into a clean backlog. Minimal: one gated SessionStart hook, no CLAUDE.md edits, no surprises.",
+  "description": "Wraps the Backlog.md MCP server, auto-installs the backlog-md CLI on first use, and adds a `/bootstrap` skill for migrating messy /docs folders into a clean backlog. Minimal: three gated hooks, no CLAUDE.md edits, no surprises.",
   "author": {
     "name": "SMKeramati",
     "url": "https://github.com/SMKeramati"

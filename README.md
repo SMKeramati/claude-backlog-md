@@ -1,6 +1,6 @@
 # claude-backlog-md
 
-**Claude Code plugin for [Backlog.md](https://github.com/MrLesk/Backlog.md).** Wraps the MCP server, auto-installs the CLI on first use, and adds a `/bootstrap-from-docs` skill for turning a messy `/docs` folder into a clean Backlog. Minimal — three gated hooks, zero CLAUDE.md edits.
+**Claude Code plugin for [Backlog.md](https://github.com/MrLesk/Backlog.md).** Wraps the MCP server, auto-installs the CLI on first use, and adds a `/bootstrap` skill for turning a messy `/docs` folder into a clean Backlog. Minimal — three gated hooks, zero CLAUDE.md edits.
 
 ## Quick start
 
@@ -26,7 +26,7 @@ SessionStart hook  ──┐
                      ├─ only activates in projects with a `backlog/` folder
 MCP server         ──┘  (so casual chats don't trigger anything)
 
-/backlog-md:bootstrap-from-docs  ──  user-invoked, interactive migration
+/backlog-md:bootstrap  ──  user-invoked, interactive migration
                                      dry-runs the plan, asks before writing
 ```
 
@@ -102,13 +102,13 @@ Claude: [reads task_list via MCP, answers]
 Run the bootstrap skill:
 
 ```
-/backlog-md:bootstrap-from-docs
+/backlog-md:bootstrap
 ```
 
 or pointing at a non-default path:
 
 ```
-/backlog-md:bootstrap-from-docs ./project-notes
+/backlog-md:bootstrap ./project-notes
 ```
 
 The skill will:
